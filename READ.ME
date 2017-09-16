@@ -1,0 +1,42 @@
+Test program for Flip Dot display LAWO, with
+3 chips FP2800A: one for the columns, two for the rows
+
+Connection to Arduino MEGA 1280
+PA --- row
+PC --- columns
+PL --- Panel selection
+
+Arduino MEGA 2560 | Flip Dot Display
+Port Name | Pin-# | Pin-# | Signal FP2800A
+           |       |       |
+----------+-------|---------------------
+ PA0     |   22  |   17  | Row_A0
+ PA1     |   23  |   19  | Row_A1
+ PA2     |   24  |   21  | Row_A2
+ PA3     |   25  |   23  | Row_B0
+ PA4     |   26  |   25  | Row_B1
+ PA5     |  n.c. |
+ PA6     |   28  |   10  | Row_Enable_on
+ PA7     |   29  |   12  | Row_Enable_off
+ PC0     |   37  |    7  | Col_A0
+ PC1     |   36  |    9  | Col_A1
+ PC2     |   35  |   11  | Col_A2
+ PC3     |   34  |   13  | Col_B0
+ PC4     |   33  |   15  | Col_B1
+ PC5     |   32  |    8  | Col_Data
+ PC6     |  n.c.
+ PC7     |  n.c.
+ PL0     |   49  |   28  | Col_Enable Panel 1
+ PL1     |   48  |   26  | Col_Enable Panel 2
+ PL2     |   47  |   24  | Col_Enable Panel 3
+ PL3     |   46  |   22  | Col_Enable Panel 4
+ PL4     |   45  |   20  | Col_Enable Panel 5
+ PL5     |   44  |   18  | Col_Enable Panel 6
+ PL6     |   43  |   16  | Col_Enable Panel 7
+ PL7     |   42  |   14  | Col_Enable Panel 8
+         |       | 29,30 | VS ------------ 10 V DC
+         |       | 31,33 | GND------------ GND
+         |       | 32,34 | GND------------ GND
+  5V     |       |  5,6  | Vcc
+ GND     |       |  1,3  | GND
+ GND     |       |  2,4  | GND

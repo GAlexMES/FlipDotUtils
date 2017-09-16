@@ -1,13 +1,21 @@
-//------------------------------------------------------------------------------
-// Panel Definitions
-#define PANEL_WIDTH     28 // single Panel width in pixel
-#define PANEL_HEIGHT    24 // single Panel height in pixel
+#ifndef PANEL_WIDTH
+  #define PANEL_WIDTH     28 // single Panel width in pixel
+#endif
+
+#ifndef PANEL_HEIGHT
+  #define PANEL_HEIGHT     24 // single Panel width in pixel
+#endif
+
+#ifndef PANEL_NUMBER
+  #define PANEL_NUMBER     1 // single Panel width in pixel
+#endif
+
+#define PIXEL_PER_CHAR_3x5 4
+#define PIXEL_PER_CHAR_5x7 6
 #define PIXELS_WIDTH (PANEL_WIDTH * PANEL_NUMBER)
 #define PIXELS_HEIGHT PANEL_HEIGHT
 
 #define LED_PIN         13
-
-#include <Arduino.h>
 
 char pixels[PANEL_WIDTH*PANEL_NUMBER][PANEL_HEIGHT];
 int px, py;
@@ -24,18 +32,16 @@ void setupDotFlipper()
   // Serial 1 is the command port
   Serial.begin(115200);
   Serial.print("Setup \r\n");
-
+  
   // Port A, C & L = output
-  //DDRA = 0xFF;
-  //DDRC = 0xFF;
-  //DDRL = 0xFF;
-
-
+  DDRA = 0xFF;
+  DDRC = 0xFF;
+  DDRL = 0xFF;
   // Set all pins to LOW
   PORTA = 0x00;
   PORTC = 0x00;
   PORTL = 0x00;
-
+  
   // Required for the various effects
   dx = 1;
   dy = 1;
@@ -45,21 +51,8 @@ void setupDotFlipper()
   oldy = 0;
 
   // initialize the digital pin as an output.
-  pinMode(LED_PIN, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);     
  }
-
-void showImage()
-{
-
-    for (int y = 0;  y < PANEL_HEIGHT ;  y++) {
-        for (int x = 0;  x < PANEL_WIDTH*PANEL_NUMBER;  x++)
-          {
-              int pos = x+(y*PANEL_WIDTH * PANEL_NUMBER);
-              setPixel(x, y, image[pos]);
-              delayMicroseconds(500);
-          }
-    }
-}
 
 void setPixel(uint8_t col, uint8_t row, bool on)
 {
@@ -68,7 +61,7 @@ void setPixel(uint8_t col, uint8_t row, bool on)
   pixels[col][row] = on;
 
   // Translate Column to Panel
-  uint8_t panel = col/PANEL_WIDTH;
+  uint8_t panel = col/PANEL_WIDTH; 
   col = col - (panel * PANEL_WIDTH);
   // Translate pixel coordinates to row and column address
   // This is necessary because the FP2800A chip skips the
@@ -77,7 +70,7 @@ void setPixel(uint8_t col, uint8_t row, bool on)
   col = coord_to_row_col[col];
   // Translate the panelnumber into correct bits
   panel = panel_to_bits[panel];
-
+  
   // Set row address
   PORTA = (row & 0x1F);
   // Set column address
@@ -87,10 +80,10 @@ void setPixel(uint8_t col, uint8_t row, bool on)
     PORTC |= 0x20;
   else
     PORTC &= 0xDF;
-
-  // Wait t_SE
+    
+  // Wait t_SE  
   delayMicroseconds(50);
-
+  
   // Set Enable
   PORTL = (panel & 0xFF);  // Col_Enable panel x
   if (on)
@@ -103,23 +96,23 @@ void setPixel(uint8_t col, uint8_t row, bool on)
     PORTA |= 0x80;  // Row_Enable_off
 //    PORTC |= 0x40;  // Col_Enable
   }
-
+  
   // Give the dots time to flip
   delayMicroseconds(1200);
-
+    
   // Reset Data and Enable lines
   PORTA &= 0x1F;
   PORTC &= 0x1F;
   PORTL = 0x00;
-
+  
   // Wait t_off
   delayMicroseconds(150);
-}
+}  
 
  void fillRect(int x1, int y1, int x2, int y2, bool on)
 {
-
-  for (int y = y1;  y <= y2;  y++)
+  
+  for (int y = y1;  y <= y2;  y++) 
     for (int x = x1;  x <= x2;  x++)
       {
           setPixel(x, y, on);
@@ -127,10 +120,14 @@ void setPixel(uint8_t col, uint8_t row, bool on)
 }
 
 //--------------------------------------------------------
+
+
+//--------------------------------------------------------
 // Fills the display
 // black == true -> display will be filled with black
 // black == false -> display will be filled in the other color
 void fillDisplay(bool black)
 {
+  Serial.println("Fill display");
   fillRect(0, 0, ((PANEL_WIDTH * PANEL_NUMBER) - 1) , (PANEL_HEIGHT - 1), !black);
 }
