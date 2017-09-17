@@ -10,6 +10,10 @@
   #define PANEL_NUMBER     1 // single Panel width in pixel
 #endif
 
+#ifndef DEBUG_LOG
+  #define DEBUG_LOG     false
+#endif
+
 #define PIXEL_PER_CHAR_3x5 4
 #define PIXEL_PER_CHAR_5x7 6
 #define PIXELS_WIDTH (PANEL_WIDTH * PANEL_NUMBER)
@@ -124,10 +128,10 @@ void setPixel(uint8_t col, uint8_t row, bool on)
 
 //--------------------------------------------------------
 // Fills the display
-// black == true -> display will be filled with black
-// black == false -> display will be filled in the other color
+// black == false -> display will be filled with black
+// black == true -> display will be filled in the other color
 void fillDisplay(bool black)
 {
   Serial.println("Fill display");
-  fillRect(0, 0, ((PANEL_WIDTH * PANEL_NUMBER) - 1) , (PANEL_HEIGHT - 1), !black);
+  fillRect(0, 0, ((PANEL_WIDTH * PANEL_NUMBER) - 1) , (PANEL_HEIGHT - 1), black);
 }

@@ -2,14 +2,17 @@
 #define PANEL_HEIGHT    24 // single Panel height in pixel
 #define PANEL_NUMBER     3 // Number of connected Panels
 
+#define USE_SNAKE // to use the snake gane
 void setup()
 {
     setupDotFlipper();
+    fillDisplay(true);
+    fillDisplay(false);
+    setupSnake();
 }
-bool fill = false;
+
 void loop()
 {
-  
-  fillDisplay(fill);
-  fill = !fill;
+   loopSnake();
+   delay(1000);
 }
